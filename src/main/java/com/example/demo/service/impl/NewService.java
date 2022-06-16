@@ -8,8 +8,8 @@ import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.NewRepository;
 import com.example.demo.service.INewService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,15 +25,30 @@ private CategoryRepository categoryRepository;
 private NewConverter newConverter;
 
     @Override
-    public List<NewDTO> findAll(Pageable pageable ) {
-        List<NewDTO> results= new ArrayList<>();
-        List<NewEntity> entities =newRepository.findAll(pageable).getContent();
-        for (NewEntity item:entities){
+    public List<NewDTO> findAll(Pageable pageable) {
+        List<NewDTO> results = new ArrayList<>();
+        List<NewEntity> entities = newRepository.findAll(pageable).getContent();
+        for (NewEntity item: entities) {
             NewDTO newDTO = newConverter.toDTO(item);
             results.add(newDTO);
-
-        }        return results;
+        }
+        return results;
     }
+
+    @Override
+    public List<NewDTO> findAll() {
+        List<NewDTO> results = new ArrayList<>();
+        List<NewEntity> entities = newRepository.findAll();
+        for (NewEntity item: entities) {
+            NewDTO newDTO = newConverter.toDTO(item);
+            results.add(newDTO);
+        }
+        return results;
+    }
+    //    @Override
+//    public List<NewEntity> findAll() {
+//        return newRepository.findAll();
+//    }
 
     @Override
     public int totalItem() {

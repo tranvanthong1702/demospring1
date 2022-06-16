@@ -15,18 +15,21 @@ import org.springframework.web.bind.annotation.*;
 public class NewAPI {
     @Autowired
     private INewService newService;
-//    @GetMapping("/new")
-//    public NewOutput showNew(@RequestParam("page")int page,
-//                             @RequestParam("limit") int limit){
-//        NewOutput results=new NewOutput();
-//        results.setPage(page);
-//        Pageable pageable = PageRequest.of(page, limit);
-//        results.setListResult(newService.findAll(pageable));
-//        results.setTotalPage((int) Math.ceil((double) (newService.totalItem()/limit)));
-//        return results;
-//    }
-    @GetMapping // hiển thị danh mục sản phẩm Product
-    
+    @GetMapping(value = "/new")
+    public NewOutput showNew(@RequestParam(value = "page", required = false) Integer page,
+                             @RequestParam(value = "limit",required = false) Integer limit) {
+        NewOutput result = new NewOutput();
+        if (page != null&&limit!=null){
+            result.setPage(page);
+            Pageable pageable = PageRequest.of(page - 1, limit);
+            result.setListResult(newService.findAll(pageable));
+            result.setTotalPage((int) Math.ceil((double) (newService.totalItem()) / limit));
+        }else {
+            result.setListResult(newService.findAll());
+        }
+        return result;
+    }
+
     @PostMapping("/new")
     public NewDTO createNew(@RequestBody NewDTO model) {
         return newService.save(model);

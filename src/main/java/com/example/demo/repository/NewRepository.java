@@ -11,9 +11,5 @@ import java.util.Optional;
 
 public interface NewRepository extends JpaRepository<NewEntity, Long> {
 
-    @Override
-    void deleteById(Long aLong);
-    List<NewEntity> findAll();
-
 
 }
